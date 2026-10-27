@@ -42,5 +42,9 @@ We are looking for **Colleagues**:
 *   **Engineers (Researchers):** Can translate magic into physics.
 *   **Developers:** Frontend, Backend, AI integration.
 
+## 🚀 GitHub Pages Deployment
+
+The static site in `Static/` is deployed by the `Deploy static site to GitHub Pages` workflow on pushes to `main`. To enable deployment, open the repository's **Settings → Pages** and set the build and deployment source to **GitHub Actions**. The workflow can also be started manually from the **Actions** tab.
+
 ---
 *Welcome to the laboratory, Colleague.*

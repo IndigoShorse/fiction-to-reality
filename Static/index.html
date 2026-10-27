@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gap Research Lab</title>
+<style>
+  :root {
+    --parchment: #F4EBD9; --parchment-dark: #EDE3D0; --ink: #3B2F2F; --ink-soft: #6B5B4E; --ink-line: #8B7355; --accent: #8B2E2E;
+    --serif: Georgia, 'PT Serif', serif; --sans: 'Segoe UI', Arial, sans-serif; --mono: 'JetBrains Mono', Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--parchment); color: var(--ink); font-family: var(--serif); line-height: 1.6;
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    background-image: linear-gradient(var(--ink-line) 1px, transparent 1px), linear-gradient(90deg, var(--ink-line) 1px, transparent 1px);
+    background-size: 40px 40px; background-position: -1px -1px; background-blend-mode: multiply;
+  }
+  body::before { content: ""; position: fixed; inset: 0; background: var(--parchment); opacity: 0.92; z-index: -1; }
+  
+  .hub-container { max-width: 900px; width: 100%; padding: 40px 20px; text-align: center; }
+  .hub-title { font-size: 36px; color: var(--ink); margin-bottom: 10px; }
+  .hub-subtitle { font-family: var(--sans); font-size: 16px; color: var(--ink-soft); margin-bottom: 50px; }
+  
+  .paths { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .path-card {
+    background: var(--parchment); border: 1px solid var(--ink-line); padding: 32px 24px; border-radius: 4px;
+    text-decoration: none; color: var(--ink); transition: 0.2s; display: flex; flex-direction: column; align-items: center;
+  }
+  .path-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(59, 47, 47, 0.15); border-color: var(--accent); }
+  .path-icon { font-size: 32px; margin-bottom: 16px; }
+  .path-title { font-size: 22px; font-weight: bold; margin-bottom: 12px; }
+  .path-desc { font-family: var(--sans); font-size: 14px; color: var(--ink-soft); line-height: 1.5; text-align: center; }
+  .path-tag { margin-top: 20px; font-family: var(--mono); font-size: 12px; color: var(--accent); text-transform: uppercase; border-top: 1px dashed var(--ink-line); padding-top: 12px; width: 100%; text-align: center; }
+
+  /* Модалка */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(59, 47, 47, 0.55); display: none; align-items: center; justify-content: center; z-index: 200; padding: 20px; }
+  .modal-overlay.show { display: flex; }
+  .modal { background: var(--parchment); border: 1px solid var(--ink-line); max-width: 760px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 48px 56px 40px; border-radius: 4px; box-shadow: 0 12px 40px rgba(0,0,0,0.3); position: relative; }
+  .modal .close { position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 22px; color: var(--ink-soft); cursor: pointer; }
+  .modal h2 { font-family: var(--serif); font-size: 30px; line-height: 1.25; color: var(--ink); margin-bottom: 6px; letter-spacing: -0.01em; }
+  .modal .welcome-sub { font-family: var(--mono); font-size: 12px; color: var(--accent); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 24px; display: block; }
+  
+  .modal .welcome-text { font-family: var(--serif); font-size: 16px; line-height: 1.7; color: var(--ink); text-align: left; }
+  .modal .welcome-text p { margin-bottom: 14px; }
+  .modal .welcome-text p:first-of-type::first-letter { font-size: 46px; float: left; line-height: 0.95; padding: 4px 10px 0 0; color: var(--accent); font-family: var(--serif); }
+  .modal .welcome-text strong { font-weight: bold; }
+  
+  .modal .welcome-actions { display: flex; gap: 12px; margin-top: 32px; align-items: center; justify-content: center; flex-wrap: wrap; }
+  .modal .welcome-actions a.btn {
+    font-family: var(--sans); font-size: 14px; padding: 12px 24px; background: var(--accent); color: var(--parchment); 
+    border: none; border-radius: 3px; cursor: pointer; letter-spacing: 0.02em; text-decoration: none; font-weight: 600;
+  }
+  .modal .welcome-actions a.btn:hover { background: #6f2424; }
+  .modal .welcome-actions a.btn-secondary { background: none; border: 1px solid var(--accent); color: var(--accent); }
+  .modal .welcome-actions a.btn-secondary:hover { background: var(--parchment-dark); }
+
+  @media (max-width: 768px) { .paths { grid-template-columns: 1fr; } .hub-title { font-size: 28px; } .modal { padding: 32px 24px 28px; } .modal h2 { font-size: 24px; } .modal .welcome-text { font-size: 15px; } }
+</style>
+</head>
+<body>
+
+<div class="hub-container">
+  <h1 class="hub-title">Gap Research Lab</h1>
+  <p class="hub-subtitle">
+    Инженерная спецификация магии как технологии. Выберите путь: понять науку за фантастикой или помочь построить строгую спецификацию.
+  </p>
+
+  <div class="paths">
+    <a href="learn/index.html" class="path-card">
+      <div class="path-icon">📖</div>
+      <div class="path-title">Learn</div>
+      <div class="path-desc">
+        Blackboard. Учебный центр. Как работает магия в Гарри Поттере? Какие законы физики и биологии стоят за заклинаниями?
+      </div>
+      <div class="path-tag">Blackboard → /learn</div>
+    </a>
+
+    <a href="lab/index.html" class="path-card">
+      <div class="path-icon">🔬</div>
+      <div class="path-title">Lab</div>
+      <div class="path-desc">
+        Blueprint. Лаборатория. Корневая спецификация MagicNet. Найдите гапы, предложите правки и помогите создать ТЗ.
+      </div>
+      <div class="path-tag">Blueprint → /lab</div>
+    </a>
+  </div>
+</div>
+
+<!-- Модалка приветствия -->
+<div class="modal-overlay" id="welcome-overlay">
+  <div class="modal">
+    <button class="close" id="welcome-close">&times;</button>
+    
+    <h2>Наука начинается с фантастики.<br>Мы превращаем её в технологию.</h2>
+    <span class="welcome-sub">Gap Research Lab · Метод «Гап → ТЗ»</span>
+    
+    <div class="welcome-text">
+      <p>Вспомните Жюля Верна. Он описал подводную лодку «Наутилус» за десятки лет до того, как инженеры смогли построить нечто подобное. Он не изобретал двигатель, но он задал рамку и написал требования. Через сто лет фантастика стала инженерией.</p>
+      
+      <p>Gap Research Lab делает то же самое с миром магии. Мы берем вселенную Гарри Поттера как инженерный кейс. Почему именно её? Во-первых, этот мир намертво прибит к Земле, а значит, мы можем использовать реальную физику и биологию. Во-вторых, благодаря детальному описанию обучения в Хогвартсе, у нас есть богатейший материал о пользовательском опыте — как именно маги взаимодействуют с системой.</p>
+      
+      <p>Мы ищем гапы — места, где авторское описание не отвечает на вопрос. Нам не нужен ответ «Невозможно». Если магнитное поле Земли нельзя использовать для передачи данных при текущих технологиях — это не тупик. Это чертеж того, чего именно нам не хватает, чтобы это взлетело. Да, ответ «это невозможно» — допустим. Но если мы реализуем хоть что-то из того, что придумаем, — мир уже никогда не станет прежним.</p>
+      
+      <p><strong>Зачем нам это? Мы строим интернет старой школы.</strong><br>
+      Раньше интернет был местом, где гики, ученые и энтузиасты собирались вместе, чтобы совместно решать невозможные задачи. Они писали RFC, спорили на форумах и вместе строили будущее. Сейчас соцсети убивают этот дух. Gap Lab — это возвращение к корням. Это площадка, где мы собираемся всем миром, чтобы вместе искать и находить инженерные решения для «магических» задач.</p>
+      
+      <p><strong>Кого мы ищем?</strong> Тех, кто знает магию (Магиоведы) и тех, кто знает, как устроен мир (Исследователи).</p>
+      
+      <p>У нас два измерения. В <strong>/lab (Blueprint)</strong> мы строим инженерную спецификацию, спорим и формулируем ТЗ.</p>
+      
+      <p>А как любой приличный университет, мы имеем свой учебный центр.<br>
+      В <strong>/learn (Blackboard)</strong> мы не просто ищем гапы — мы даем базу. Хотите сами проникнуть в магию физики или биологии? Или дать своим детям возможность увидеть, как работает мир, через призму знакомых сказок? Наш учебный факультет в вашем распоряжении. Здесь мы переводим магию на язык реальных наук.</p>
+      
+      <p>⚠️ <strong>Важно:</strong> Это абсолютно некоммерческий проект. Мы не продаем рекламу и не ищем спонсоров. Если вы хотите поддержать проект финансово (оплата хостинга) — мы это приветствуем. Наша цель — чистое исследование и просвещение.</p>
+      
+      <p>Добро пожаловать в лабораторию.</p>
+    </div>
+    
+    <div class="welcome-actions">
+      <a href="learn/index.html" class="btn btn-secondary" onclick="localStorage.setItem('gapresearch.welcomeSeen', '1');">Перейти в /learn (Учебный центр)</a>
+      <a href="lab/index.html" class="btn" onclick="localStorage.setItem('gapresearch.welcomeSeen', '1');">Перейти в /lab (Лаборатория)</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const welcomeOverlay = document.getElementById('welcome-overlay');
+  const welcomeClose = document.getElementById('welcome-close');
+
+  function closeWelcome() {
+    welcomeOverlay.classList.remove('show');
+    localStorage.setItem('gapresearch.welcomeSeen', '1');
+  }
+
+  welcomeClose.addEventListener('click', closeWelcome);
+  welcomeOverlay.addEventListener('click', function (e) {
+    if (e.target === welcomeOverlay) closeWelcome();
+  });
+
+  // Показываем при первом заходе
+  if (!localStorage.getItem('gapresearch.welcomeSeen')) {
+    welcomeOverlay.classList.add('show');
+  }
+</script>
+</body>
+</html>
