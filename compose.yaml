@@ -23,6 +23,9 @@ services:
       timeout: 5s
       retries: 10
     restart: unless-stopped
+    ports:
+      # Доступ для администрирования только через SSH-туннель на VPS.
+      - "127.0.0.1:5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 

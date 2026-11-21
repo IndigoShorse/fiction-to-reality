@@ -58,3 +58,25 @@ chmod 700 /opt/fiction-to-reality/deploy.sh
 После этого push в `main`, затрагивающий `Backend/` или `compose.yaml`, выполнит деплой. Workflow не выводит секреты в логи.
 
 > До настройки Nginx API намеренно не открыто извне: Compose привязывает порт `8000` к `127.0.0.1`.
+
+## Доступ к PostgreSQL из pgAdmin через SSH
+
+PostgreSQL опубликован только на `127.0.0.1:5432` VPS. Не открывайте порт `5432` в UFW или firewall хостинга.
+
+На вашем ПК откройте отдельное окно PowerShell и оставьте его запущенным:
+
+```powershell
+ssh -N -L 5433:127.0.0.1:5432 -p 2222 root@176.12.66.29
+```
+
+В pgAdmin зарегистрируйте сервер со следующими параметрами:
+
+| Поле | Значение |
+| --- | --- |
+| Host name/address | `127.0.0.1` |
+| Port | `5433` |
+| Maintenance database | `f2r` |
+| Username | значение `POSTGRES_USER` из `.env` |
+| Password | значение `POSTGRES_PASSWORD` из `.env` |
+
+Закрытие окна PowerShell закрывает туннель. Если SSH использует другого пользователя, замените `root` в команде на него.
