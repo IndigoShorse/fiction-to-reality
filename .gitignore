@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+
+# Local runtime and secrets
+.env
+Backend/data/
+
+# Frontend
+Frontend/node_modules/
+Frontend/dist/
