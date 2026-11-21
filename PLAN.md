@@ -9,7 +9,7 @@
 
 ## 2. Подготовка VPS
 
-- [ ] Установить Docker Engine и Docker Compose plugin.
+- [x] Установить Docker Engine и Docker Compose plugin.
 - [ ] Клонировать репозиторий в `/opt/fiction-to-reality`.
 - [ ] Создать `.env` по образцу `.env.example` и установить сильный пароль БД.
 - [ ] Запустить `docker compose up -d --build`.
