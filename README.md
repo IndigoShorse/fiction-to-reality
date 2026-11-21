@@ -27,7 +27,7 @@ The project is divided into three stages. The core UI is unified (Cards with a C
 ## 🚀  Tech & Economics
 
 *   **Strategy:** RU-First (for now). Focused on the Russian-speaking audience.
-*   **Tech Stack:** Vanilla HTML/CSS/JS (Frontend), PostgreSQL (DB), LLM Agent (AI).
+*   **Tech Stack:** Astro (Frontend), PostgreSQL (DB), LLM Agent (AI).
 *   **Auth & Payments:** Yandex ID, SBP (Russian Fast Payment System).
 *   **Economics:** Club format (Patron). No ads, no sponsors.
 
@@ -44,7 +44,7 @@ We are looking for **Colleagues**:
 
 ## 🚀 GitHub Pages Deployment
 
-The static site in `Static/` is deployed by the `Deploy static site to GitHub Pages` workflow on pushes to `main`. To enable deployment, open the repository's **Settings → Pages** and set the build and deployment source to **GitHub Actions**. The workflow can also be started manually from the **Actions** tab.
+The Astro site in `Frontend/` is built and deployed by the `Deploy Astro site to GitHub Pages` workflow on pushes to `main`. To enable deployment, open the repository's **Settings → Pages** and set the build and deployment source to **GitHub Actions**. The workflow can also be started manually from the **Actions** tab.
 
 ---
 *Welcome to the laboratory, Colleague.*

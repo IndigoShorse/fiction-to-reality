@@ -1,0 +1,30 @@
+---
+interface Props {
+  href: string;
+  label: string;
+  arrow?: boolean;
+}
+
+const { href, label, arrow = false } = Astro.props;
+---
+
+<a href={href} class="nav-link">{arrow && '← '}{label}</a>
+
+<style>
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 13px;
+    color: var(--ink-soft, #6b5b4e);
+    text-decoration: none;
+    border: 1px solid var(--ink-line, #8b7355);
+    padding: 6px 12px;
+    border-radius: 3px;
+  }
+
+  .nav-link:hover {
+    color: var(--accent, #8b2e2e);
+    border-color: var(--accent, #8b2e2e);
+  }
+</style>
