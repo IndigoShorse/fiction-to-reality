@@ -58,7 +58,24 @@ chmod 700 /opt/fiction-to-reality/deploy.sh
 
 После этого push в `main`, затрагивающий `Backend/` или `compose.yaml`, выполнит деплой. Workflow не выводит секреты в логи.
 
-> До настройки Nginx API намеренно не открыто извне: Compose привязывает порт `8000` к `127.0.0.1`.
+> API намеренно не открыто извне: Compose привязывает порт `8000` к `127.0.0.1`. Caddy принимает HTTP на порту `80` и проксирует его к API внутри Docker-сети.
+
+## Caddy и HTTPS
+
+До появления домена Caddy отвечает по HTTP на IP VPS. Проверка после деплоя:
+
+```bash
+curl http://127.0.0.1/
+curl http://127.0.0.1/api/health
+```
+
+Когда у домена появится A-запись на IP VPS, замените `:80` в `Caddyfile` на домен, например `api.example.com`, и примените изменения:
+
+```bash
+docker compose up -d --build
+```
+
+Caddy сам запросит и будет продлевать бесплатный сертификат Let's Encrypt. Для этого в firewall должны быть открыты TCP-порты `80` и `443`.
 
 ## Доступ к PostgreSQL из pgAdmin через SSH
 
