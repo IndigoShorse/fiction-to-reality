@@ -51,9 +51,10 @@ chmod 700 /opt/fiction-to-reality/deploy.sh
 | Secret | Значение |
 | --- | --- |
 | `DEPLOY_HOST` | IP VPS, например `176.12.66.29` |
+| `DEPLOY_PORT` | SSH-порт VPS: `2222` |
 | `DEPLOY_USER` | Пользователь на VPS (`root` на первом этапе или отдельный deploy-пользователь) |
 | `DEPLOY_SSH_PRIVATE_KEY` | Приватный ключ, которым Actions войдёт на VPS |
-| `DEPLOY_KNOWN_HOSTS` | Результат `ssh-keyscan -H 176.12.66.29`, проверенный по fingerprint VPS |
+| `DEPLOY_KNOWN_HOSTS` | Результат `ssh-keyscan -H -p 2222 176.12.66.29`, проверенный по fingerprint VPS |
 
 После этого push в `main`, затрагивающий `Backend/` или `compose.yaml`, выполнит деплой. Workflow не выводит секреты в логи.
 
