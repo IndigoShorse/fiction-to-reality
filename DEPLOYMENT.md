@@ -65,7 +65,8 @@ chmod 700 /opt/fiction-to-reality/deploy.sh
 До появления домена Caddy отвечает по HTTP на IP VPS. Проверка после деплоя:
 
 ```bash
-curl http://127.0.0.1/health
+curl http://127.0.0.1/
+curl http://127.0.0.1/api/health
 ```
 
 Когда у домена появится A-запись на IP VPS, замените `:80` в `Caddyfile` на домен, например `api.example.com`, и примените изменения:

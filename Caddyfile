@@ -1,7 +1,18 @@
 # Пока домена нет, Caddy обслуживает HTTP по IP VPS.
-# После настройки DNS замените `:80` на домен, например `api.example.com`:
+# После настройки DNS замените `:80` на домен, например `f2r.example.com`:
 # Caddy автоматически получит и будет продлевать сертификат Let's Encrypt.
 :80 {
     encode zstd gzip
-    reverse_proxy api:8000
+
+    # API доступен через тот же origin, без CORS-настроек во frontend.
+    handle_path /api/* {
+        reverse_proxy api:8000
+    }
+
+    # Собранный Astro frontend.
+    handle {
+        root * /srv
+        try_files {path} {path}/ /index.html
+        file_server
+    }
 }

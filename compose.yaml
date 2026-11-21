@@ -30,7 +30,10 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   caddy:
-    image: caddy:2-alpine
+    build:
+      context: .
+      dockerfile: Caddy.Dockerfile
+    image: fiction-to-reality-caddy
     depends_on:
       api:
         condition: service_started
