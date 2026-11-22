@@ -1,0 +1,31 @@
+.modal-overlay { position: fixed; inset: 0; z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; background: rgb(59 47 47 / 55%); }
+.modal-overlay.show { display: flex; }
+.modal { position: relative; width: 100%; max-width: 680px; max-height: 80vh; overflow-y: auto; border: 1px solid var(--ink-line); border-radius: 4px; padding: 28px 32px; background: var(--parchment); box-shadow: 0 12px 40px rgb(0 0 0 / 30%); }
+.modal h3 { margin-bottom: 4px; color: var(--ink); font-size: 22px; }
+.modal .modal-ref { display: block; margin-bottom: 16px; color: var(--accent); font: 12px var(--mono); }
+.modal .modal-body { color: var(--ink); font: 14px/1.65 var(--sans); }
+.modal .modal-body p { margin-bottom: 10px; }
+.modal .modal-body .tz { margin-top: 14px; border-left: 3px solid var(--accent); padding: 12px 14px; background: var(--parchment-dark); font-size: 13.5px; }
+.modal .modal-body .tz strong { display: block; margin-bottom: 4px; color: var(--accent); font-size: 12px; text-transform: uppercase; }
+.modal .close { position: absolute; top: 12px; right: 16px; border: 0; background: none; color: var(--ink-soft); font-size: 22px; cursor: pointer; }
+.modal .close:hover { color: var(--accent); }
+
+.suggest-toggle { margin-top: 8px; border: 0; border-bottom: 1px dotted var(--accent); padding: 4px 0; background: none; color: var(--accent); font: 12px var(--sans); cursor: pointer; }
+.suggest-toggle:hover { border-bottom-style: solid; }
+.auth-modal { max-width: 420px; }
+.auth-modal label { display: block; margin: 12px 0 4px; color: var(--ink-soft); font: 12px var(--sans); }
+.auth-modal input { width: 100%; border: 1px solid var(--ink-line); border-radius: 3px; padding: 8px 10px; background: var(--parchment); color: var(--ink); font: 14px var(--sans); }
+.auth-modal .auth-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.auth-modal .auth-actions button, .suggest-box .suggest-actions button { border: 1px solid var(--ink-line); border-radius: 3px; padding: 8px 14px; background: var(--parchment); color: var(--ink); font: 13px var(--sans); cursor: pointer; }
+.auth-modal .auth-actions button.primary, .suggest-box .suggest-actions button.primary { border-color: var(--accent); background: var(--accent); color: var(--parchment); }
+.suggest-box { display: none; border-left: 3px solid var(--accent); padding: 12px 14px; background: var(--parchment-dark); font: 13px var(--sans); }
+.suggest-box.open { display: block; }
+.suggest-box .suggest-types, .suggest-box .suggest-position { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 8px; color: var(--ink-soft); font-size: 12px; }
+.suggest-box textarea { width: 100%; min-height: 70px; resize: vertical; border: 1px solid var(--ink-line); border-radius: 3px; padding: 8px 10px; background: var(--parchment); color: var(--ink); font: 13px var(--sans); }
+.suggest-box .suggest-actions { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+.suggest-box .suggest-actions button { padding: 6px 12px; font-size: 12px; }
+.suggest-thesis-btn { display: block; width: 100%; margin: 0 0 18px; border: 1px dashed var(--accent); border-radius: 3px; padding: 10px 14px; background: var(--parchment-dark); color: var(--accent); font: 13px var(--sans); cursor: pointer; text-align: center; }
+.suggest-thesis-btn.bottom { margin: 18px 0 0; }
+.auth-required { display: none; margin-top: 10px; border-left: 3px solid var(--accent); padding: 10px 12px; background: var(--parchment-dark); color: var(--ink-soft); font-size: 12.5px; }
+.auth-required.show { display: block; }
+.auth-required button { margin-left: 8px; border: 0; border-radius: 3px; padding: 4px 10px; background: var(--accent); color: var(--parchment); font-size: 12px; cursor: pointer; }

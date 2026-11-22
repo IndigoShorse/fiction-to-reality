@@ -3,12 +3,13 @@ interface Props {
   href: string;
   label: string;
   arrow?: boolean;
+  current?: boolean;
 }
 
-const { href, label, arrow = false } = Astro.props;
+const { href, label, arrow = false, current = false } = Astro.props;
 ---
 
-<a href={href} class="nav-link">{arrow && '← '}{label}</a>
+<a href={href} class:list={['nav-link', { current }]} aria-current={current ? 'page' : undefined}>{arrow && '← '}{label}</a>
 
 <style>
   .nav-link {
@@ -24,6 +25,11 @@ const { href, label, arrow = false } = Astro.props;
   }
 
   .nav-link:hover {
+    color: var(--accent, #8b2e2e);
+    border-color: var(--accent, #8b2e2e);
+  }
+
+  .nav-link.current {
     color: var(--accent, #8b2e2e);
     border-color: var(--accent, #8b2e2e);
   }

@@ -1,0 +1,39 @@
+---
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+---
+
+<div class="modal-overlay" data-welcome-overlay>
+  <div class="modal welcome-modal">
+    <button class="close" type="button" data-welcome-close>&times;</button>
+    <h2>Наука начинается с фантастики.<br />Мы превращаем её в технологию.</h2>
+    <span class="welcome-sub">Gap Research Lab · Метод «Гап → ТЗ»</span>
+    <div class="welcome-text">
+      <p>Вспомните Жюля Верна. Он описал подводную лодку «Наутилус» за десятки лет до того, как инженеры смогли построить нечто подобное. Он не изобретал двигатель, но он задал рамку и написал требования. Через сто лет фантастика стала инженерией.</p>
+      <p>Gap Research Lab делает то же самое с миром магии. Мы берём вселенную Гарри Поттера как инженерный кейс: благодаря её связи с Землёй можем использовать реальную физику и биологию, а подробности обучения в Хогвартсе дают богатый материал о пользовательском опыте.</p>
+      <p>Мы ищем гапы — места, где авторское описание не отвечает на вопрос. Нам не нужен ответ «Невозможно»: ограничение становится чертежом того, чего не хватает, чтобы решение взлетело.</p>
+      <p><strong>Зачем нам это? Мы строим интернет старой школы.</strong><br />Площадку, где гики, учёные и энтузиасты вместе спорят, пишут требования и ищут инженерные решения для «магических» задач.</p>
+      <p><strong>Кого мы ищем?</strong> Тех, кто знает магию, и тех, кто знает, как устроен мир.</p>
+      <p>В <strong>/lab (Blueprint)</strong> мы строим инженерную спецификацию, спорим и формулируем ТЗ. В библиотеке сохраняем тексты и материалы проекта.</p>
+      <p>⚠️ <strong>Важно:</strong> это некоммерческий проект для исследования и просвещения.</p>
+      <p>Добро пожаловать в лабораторию.</p>
+    </div>
+    <div class="welcome-actions">
+      <a href={`${base}lib/`} class="btn btn-secondary" data-welcome-action>Перейти в /lib (Библиотека)</a>
+      <a href={`${base}lab/`} class="btn" data-welcome-action>Перейти в /lab (Лаборатория)</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const storageKey = 'gapresearch.welcomeSeen';
+  const overlay = document.querySelector<HTMLElement>('[data-welcome-overlay]');
+  const close = () => {
+    overlay?.classList.remove('show');
+    localStorage.setItem(storageKey, '1');
+  };
+
+  document.querySelector('[data-welcome-close]')?.addEventListener('click', close);
+  overlay?.addEventListener('click', (event) => { if (event.target === overlay) close(); });
+  document.querySelectorAll('[data-welcome-action]').forEach((action) => action.addEventListener('click', () => localStorage.setItem(storageKey, '1')));
+  if (!localStorage.getItem(storageKey)) overlay?.classList.add('show');
+</script>

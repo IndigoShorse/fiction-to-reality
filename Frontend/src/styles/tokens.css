@@ -1,0 +1,11 @@
+:root {
+  --parchment: #f4ebd9;
+  --parchment-dark: #ede3d0;
+  --ink: #3b2f2f;
+  --ink-soft: #6b5b4e;
+  --ink-line: #8b7355;
+  --accent: #8b2e2e;
+  --serif: Georgia, 'PT Serif', serif;
+  --sans: 'Segoe UI', Arial, sans-serif;
+  --mono: 'JetBrains Mono', Consolas, monospace;
+}

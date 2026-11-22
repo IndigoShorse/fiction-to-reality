@@ -1,0 +1,40 @@
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <button class="close" id="modal-close">&times;</button>
+    <h3 id="modal-title"></h3>
+    <span class="modal-ref" id="modal-ref"></span>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+  import { MAGE } from '../../data/lab/mage';
+  import { PHYS } from '../../data/lab/phys';
+  import { createOverlayController } from '../../scripts/overlay-controller';
+
+  const references = { ...MAGE, ...PHYS };
+  const overlays = createOverlayController();
+  const title = document.getElementById('modal-title');
+  const reference = document.getElementById('modal-ref');
+  const body = document.getElementById('modal-body');
+
+  const open = (ref: string) => {
+    const data = references[ref as keyof typeof references];
+    if (!data || !title || !reference || !body) return;
+    title.textContent = data.short;
+    reference.textContent = `[${ref}]`;
+    body.innerHTML = data.full + (data.tz ? `<div class="tz"><strong>ТЗ</strong>${data.tz}</div>` : '');
+    const suggestion = document.createElement('button');
+    suggestion.className = 'suggest-toggle';
+    suggestion.textContent = 'Предложить правку / объяснение / ограничение';
+    suggestion.addEventListener('click', () => {
+      overlays.close('reference');
+      window.dispatchEvent(new CustomEvent('lab:open-suggestion', { detail: { ref, label: data.short } }));
+    });
+    body.appendChild(suggestion);
+    overlays.open('reference');
+  };
+
+  window.addEventListener('lab:open-reference', ((event: CustomEvent<{ ref: string }>) => open(event.detail.ref)) as EventListener);
+  document.getElementById('modal-close')?.addEventListener('click', () => overlays.close('reference'));
+</script>

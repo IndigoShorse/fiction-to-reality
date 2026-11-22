@@ -1,0 +1,80 @@
+<div class="modal-overlay" id="suggest-overlay">
+  <div class="modal">
+    <button class="close" id="suggest-close">&times;</button>
+    <h3 id="suggest-title">Предложить</h3>
+    <span class="modal-ref" id="suggest-ref"></span>
+    <div class="modal-body">
+      <div class="suggest-box open">
+        <div class="suggest-types">
+          <label><input type="radio" name="suggest-type" value="fix" checked /> Правка</label>
+          <label><input type="radio" name="suggest-type" value="explain" /> Объяснение</label>
+          <label><input type="radio" name="suggest-type" value="limit" /> Ограничение</label>
+          <label><input type="radio" name="suggest-type" value="new-thesis" /> Новый тезис</label>
+        </div>
+        <div class="suggest-position" id="suggest-position" style="display:none">
+          <label><input type="radio" name="suggest-pos" value="top" checked /> В начало ROOT</label>
+          <label><input type="radio" name="suggest-pos" value="bottom" /> В конец ROOT</label>
+        </div>
+        <textarea id="suggest-text" placeholder="Что именно поправить / объяснить / ограничить / добавить?"></textarea>
+        <div class="suggest-actions">
+          <button class="primary" id="suggest-save">Сохранить (локально)</button>
+          <button id="suggest-cancel">Отмена</button>
+          <span class="suggest-msg" id="suggest-msg"></span>
+        </div>
+        <div class="auth-required" id="suggest-auth-required">
+          Чтобы предложить, нужно войти.
+          <button id="suggest-auth-login">Войти</button>
+          <button id="suggest-auth-guest" style="background:var(--ink-soft)">Гость</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { getCurrentUser, signInAsGuest } from '../../data/auth';
+  import { createOverlayController } from '../../scripts/overlay-controller';
+
+  const overlays = createOverlayController();
+  const overlay = document.getElementById('suggest-overlay');
+  const title = document.getElementById('suggest-title');
+  const reference = document.getElementById('suggest-ref');
+  const text = document.getElementById('suggest-text') as HTMLTextAreaElement | null;
+  const message = document.getElementById('suggest-msg');
+  const authRequired = document.getElementById('suggest-auth-required');
+  const position = document.getElementById('suggest-position');
+
+  const open = (detail: { ref: string; label?: string; thesis?: boolean; position?: string }) => {
+    if (!overlay) return;
+    overlay.dataset.target = detail.ref;
+    if (title) title.textContent = detail.thesis ? 'Предложить новый тезис' : `Предложить: ${detail.label ?? ''}`;
+    if (reference) reference.textContent = detail.thesis ? '[новый тезис]' : `[${detail.ref}]`;
+    if (text) text.value = '';
+    if (message) message.textContent = '';
+    authRequired?.classList.remove('show');
+    if (position) position.style.display = detail.thesis ? '' : 'none';
+    document.querySelectorAll<HTMLInputElement>('input[name="suggest-type"]').forEach((input) => { input.checked = input.value === (detail.thesis ? 'new-thesis' : 'fix'); });
+    document.querySelectorAll<HTMLInputElement>('input[name="suggest-pos"]').forEach((input) => { input.checked = input.value === (detail.position ?? 'top'); });
+    overlays.open('suggestion');
+  };
+
+  window.addEventListener('lab:open-suggestion', ((event: CustomEvent<{ ref: string; label?: string; thesis?: boolean; position?: string }>) => open(event.detail)) as EventListener);
+  document.getElementById('suggest-close')?.addEventListener('click', () => overlays.close('suggestion'));
+  document.getElementById('suggest-cancel')?.addEventListener('click', () => overlays.close('suggestion'));
+  document.getElementById('suggest-auth-login')?.addEventListener('click', () => { overlays.close('suggestion'); window.dispatchEvent(new Event('auth:open')); });
+  document.getElementById('suggest-auth-guest')?.addEventListener('click', () => { signInAsGuest(); authRequired?.classList.remove('show'); });
+  document.getElementById('suggest-save')?.addEventListener('click', () => {
+    const target = overlay?.dataset.target;
+    const value = text?.value.trim() ?? '';
+    if (!target) return;
+    if (!getCurrentUser()) { authRequired?.classList.add('show'); return; }
+    if (!value) { if (message) message.textContent = 'Введите текст'; return; }
+    const type = document.querySelector<HTMLInputElement>('input[name="suggest-type"]:checked')?.value ?? 'fix';
+    let suggestions: unknown[] = []; try { suggestions = JSON.parse(localStorage.getItem('gapresearch.suggestions') || '[]'); } catch { /* Start with an empty list. */ }
+    const item: Record<string, unknown> = { ref: target, type, text: value, ts: Date.now() };
+    if (type === 'new-thesis') item.position = document.querySelector<HTMLInputElement>('input[name="suggest-pos"]:checked')?.value ?? 'top';
+    suggestions.push(item); localStorage.setItem('gapresearch.suggestions', JSON.stringify(suggestions));
+    if (message) message.textContent = `Сохранено локально (${suggestions.length})`;
+    if (text) text.value = '';
+  });
+</script>

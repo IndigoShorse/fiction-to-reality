@@ -1,45 +1,19 @@
 ---
-import article from '../../content/lib/dvoe-menya.md?raw';
+import ResearchLayout from '../../layouts/ResearchLayout.astro';
+import MarkdownArticle from '../../components/Lib/MarkdownArticle.astro';
+import { getArticleBySlug } from '../../data/lib';
+import { pageConfigs } from '../../config/pages';
+import '../../styles/lib/blog.css';
 
-function escapeHtml(value: string) {
-  return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-}
-
-function inlineMarkdown(value: string) {
-  return escapeHtml(value)
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    .replace(/\[([^\]]+)\]\(([^\s)]+)\)/g, '<a href="$2">$1</a>');
-}
-
-const blocks = article.trim().split(/\r?\n\s*\r?\n/);
-const title = blocks.shift()?.replace(/^#\s+/, '') ?? 'Двое меня';
+const article = await getArticleBySlug('dvoe-menya');
+if (!article) throw new Error('Article not found: dvoe-menya');
 const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
-const content = blocks.map((block) => {
-  if (block.startsWith('## ')) return `<h2>${inlineMarkdown(block.slice(3))}</h2>`;
-  if (block.startsWith('### ')) return `<h3>${inlineMarkdown(block.slice(4))}</h3>`;
-  if (block.startsWith('> ')) return `<blockquote>${inlineMarkdown(block.slice(2))}</blockquote>`;
-  return `<p>${inlineMarkdown(block)}</p>`;
-}).join('\n');
 ---
 
-<html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title} — Библиотека</title>
-    <style>
-      :root { --paper:#f4ebd9; --ink:#3b2f2f; --soft:#6b5b4e; --line:#8b7355; --accent:#8b2e2e; }
-      * { box-sizing:border-box; } body { margin:0; min-height:100vh; background:var(--paper); color:var(--ink); font-family:Georgia, serif; }
-      article { max-width:760px; margin:0 auto; padding:48px 24px 72px; } .back { color:var(--soft); font:13px 'Segoe UI', sans-serif; text-decoration:none; }
-      h1 { margin:30px 0 36px; padding-bottom:18px; border-bottom:1px solid var(--line); font-size:40px; line-height:1.2; } h2 { margin:38px 0 14px; font-size:27px; } h3 { margin:28px 0 10px; font-size:21px; }
-      p { margin:0 0 20px; font-size:18px; line-height:1.72; } blockquote { margin:24px 0; padding:4px 20px; border-left:3px solid var(--accent); color:var(--soft); }
-      strong { color:var(--accent); } a { color:var(--accent); } @media (max-width:600px) { article { padding-top:28px; } h1 { font-size:32px; } p { font-size:17px; } }
-    </style>
-  </head>
-  <body><article>
+<ResearchLayout pageTitle={`${article.title} — Библиотека`} version={pageConfigs.lib.version} activePage="lib">
+  <article class="blog-article">
     <a class="back" href={`${base}lib/`}>← Библиотека</a>
-    <h1>{title}</h1>
-    <Fragment set:html={content} />
-  </article></body>
-</html>
+    <h1>{article.title}</h1>
+    <MarkdownArticle markdown={article.markdown} />
+  </article>
+</ResearchLayout>
