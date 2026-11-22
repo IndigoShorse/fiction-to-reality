@@ -1,0 +1,24 @@
+---
+import { MAGE } from '../../data/lab/mage';
+---
+
+<aside class="column side active" data-col="left" data-lab-reference-column="mage">
+  <h2>Справочник магиоведа</h2>
+  {Object.entries(MAGE).map(([ref, item]) => (
+    <div class="item" data-ref={ref} tabindex="0" role="button">
+      <span class="ref">[{ref}]</span>{item.short}
+    </div>
+  ))}
+</aside>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-lab-reference-column="mage"] .item').forEach((item) => {
+    const ref = item.dataset.ref;
+    if (!ref) return;
+    const open = () => window.dispatchEvent(new CustomEvent('lab:open-reference', { detail: { ref } }));
+    item.addEventListener('mouseenter', () => window.dispatchEvent(new CustomEvent('lab:show-tooltip', { detail: { ref, target: item, side: 'right' } })));
+    item.addEventListener('mouseleave', () => window.dispatchEvent(new Event('lab:hide-tooltip')));
+    item.addEventListener('click', open);
+    item.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') open(); });
+  });
+</script>

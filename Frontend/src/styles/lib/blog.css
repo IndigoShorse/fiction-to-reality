@@ -1,0 +1,18 @@
+* { box-sizing: border-box; }
+body { min-height: 100vh; margin: 0; background: var(--parchment); color: var(--ink); font-family: var(--serif); }
+.library-page { max-width: 900px; margin: 0 auto; padding: 48px 24px; }
+.library-page h1 { margin: 28px 0 8px; font-size: 36px; }
+.library-page .lead { margin: 0 0 36px; color: var(--ink-soft); font: 16px var(--sans); }
+.article-card { display: block; margin: 14px 0; border: 1px solid var(--ink-line); border-radius: 4px; padding: 24px; color: inherit; text-decoration: none; transition: .2s; }
+.article-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 20px rgb(59 47 47 / 15%); }
+.article-card h2 { margin: 0 0 8px; font-size: 23px; }
+.article-card p { margin: 0; color: var(--ink-soft); font: 14px/1.55 var(--sans); }
+.blog-article { max-width: 760px; margin: 0 auto; padding: 48px 24px 72px; }
+.blog-article .back { color: var(--ink-soft); font: 13px var(--sans); text-decoration: none; }
+.blog-article h1 { margin: 30px 0 36px; border-bottom: 1px solid var(--ink-line); padding-bottom: 18px; font-size: 40px; line-height: 1.2; }
+.blog-article h2 { margin: 38px 0 14px; font-size: 27px; }
+.blog-article h3 { margin: 28px 0 10px; font-size: 21px; }
+.blog-article p { margin: 0 0 20px; font-size: 18px; line-height: 1.72; }
+.blog-article blockquote { margin: 24px 0; border-left: 3px solid var(--accent); padding: 4px 20px; color: var(--ink-soft); }
+.blog-article strong, .blog-article a { color: var(--accent); }
+@media (max-width: 600px) { .blog-article { padding-top: 28px; } .blog-article h1 { font-size: 32px; } .blog-article p { font-size: 17px; } }

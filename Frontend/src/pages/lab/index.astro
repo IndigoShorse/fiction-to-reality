@@ -1,50 +1,15 @@
 ---
-import source from '../../../../Static/lab/index.html?raw';
-import rootData from '../../../../Static/lab/js/data-root.js?raw';
-import mageData from '../../../../Static/lab/js/data-mage.js?raw';
-import physData from '../../../../Static/lab/js/data-phys.js?raw';
-import { getBody, getInlineScript, getStyle } from '../../lib/legacy';
-import NavLink from '../../components/NavLink.astro';
+import ResearchLayout from '../../layouts/ResearchLayout.astro';
+import { pageConfigs } from '../../config/pages';
+import LabIntro from '../../components/Lab/LabIntro.astro';
+import LabContent from '../../components/Lab/LabContent.astro';
+import '../../styles/lab.css';
 
-const css = getStyle(source);
-const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
-const body = getBody(source)
-  .replace(/<header class="page-header">[\s\S]*?<\/header>/, '');
-const script = getInlineScript(source);
 ---
 
-<html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gap Research Lab — Blueprint</title>
-    <style is:global set:html={css}></style>
-  </head>
-  <body>
-    <header class="page-header">
-      <div class="page-header-inner">
-        <div class="page-header-title">
-          <h1>Gap Research Lab</h1>
-          <span class="page-header-version">v7.6 · Blueprint</span>
-          <NavLink href={base} label="Hub" arrow />
-          <NavLink href={`${base}lib/`} label="Library" />
-          <span class="auth-status" id="auth-status"></span>
-          <button class="auth-btn" id="auth-btn" style="margin-left:auto;">Войти</button>
-        </div>
-        <p class="page-header-lead">
-          Инженерная спецификация магии как технологии. Мы не «объясняем» Гарри Поттера — мы достраиваем фантастический мир до строгости, достаточной, чтобы выявить гапы и сформулировать ТЗ для исследователей. Центр — тезисы концепта; края — два справочника: магиоведа (что это) и физика (почему так).
-        </p>
-        <div class="page-header-meta">
-          <span><strong>Что это:</strong> портал с корневым документом (центр) и двумя справочниками — магиоведа (слева) и физика (справа).</span>
-          <span><strong>Зачем:</strong> метод «гап → ТЗ» — описать → проверить → найти неописанное → дать задачу. Gap Research Lab — первый кейс; метод переносим.</span>
-          <span><strong>Как читать:</strong> центр — тезисы; края — перекрёстные ссылки [M] и [F]. Наведение — тезис; клик — детали и ТЗ.</span>
-        </div>
-      </div>
-    </header>
-    <Fragment set:html={body} />
-    <script is:inline set:html={rootData}></script>
-    <script is:inline set:html={mageData}></script>
-    <script is:inline set:html={physData}></script>
-    <script is:inline set:html={script}></script>
-  </body>
-</html>
+<ResearchLayout pageTitle="Gap Research Lab — Blueprint" version={pageConfigs.lab.version} activePage="lab">
+  <Fragment slot="header-content">
+    <LabIntro />
+  </Fragment>
+  <LabContent />
+</ResearchLayout>

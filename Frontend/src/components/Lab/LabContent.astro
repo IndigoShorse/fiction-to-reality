@@ -1,0 +1,44 @@
+---
+import ReferenceOverlay from '../Overlay/ReferenceOverlay.astro';
+import SuggestionOverlay from '../Overlay/SuggestionOverlay.astro';
+import MageReferenceColumn from './MageReferenceColumn.astro';
+import RootDocument from './RootDocument.astro';
+import PhysReferenceColumn from './PhysReferenceColumn.astro';
+import LabTooltip from './LabTooltip.astro';
+---
+
+<div class="tabs" data-lab-column-switcher>
+  <button data-tab="left" class="active">Магиовед</button>
+  <button data-tab="center">Корневой</button>
+  <button data-tab="right">Физик</button>
+</div>
+
+<div class="layout">
+  <MageReferenceColumn />
+  <RootDocument />
+  <PhysReferenceColumn />
+</div>
+
+<LabTooltip />
+
+<ReferenceOverlay />
+<SuggestionOverlay />
+
+<script>
+  import { initLabPage } from '../../scripts/lab-page';
+
+  document.querySelectorAll<HTMLElement>('[data-lab-column-switcher]').forEach((switcher) => {
+    const layout = switcher.nextElementSibling;
+    if (!layout?.classList.contains('layout')) return;
+    const buttons = switcher.querySelectorAll<HTMLButtonElement>('button');
+    const columns = layout.querySelectorAll<HTMLElement>('.column');
+    buttons.forEach((button) => button.addEventListener('click', () => {
+      const tab = button.dataset.tab;
+      buttons.forEach((item) => item.classList.toggle('active', item === button));
+      columns.forEach((column) => column.classList.toggle('active', column.dataset.col === tab));
+    }));
+  });
+
+  initLabPage();
+</script>
+

@@ -1,0 +1,49 @@
+---
+import { ROOT } from '../../data/lab/root';
+---
+
+<main class="column center active" data-col="center" data-lab-root-document>
+  <h1>Корневой документ</h1>
+  <div class="subtitle">тезисы 0–4 · перекрёстные ссылки [M]/[F]</div>
+  <button class="suggest-thesis-btn" data-suggest-new-thesis="top">+ Предложить тезис (в начало)</button>
+  {ROOT.map((section) => (
+    <div class="section" data-section-refs={section.refs.join(',')}>
+      <span class="num">{section.num}</span>
+      <span class="title">{section.title}</span>
+      <div class="body">{section.body}</div>
+      <div class="refs">
+        {section.refs.map((ref) => <a data-ref={ref}>[{ref}]</a>)}
+      </div>
+      <button class="suggest-toggle" data-suggest-ref={section.refs[0] ?? section.num} data-suggest-label={section.title}>Предложить правку / объяснение / ограничение</button>
+    </div>
+  ))}
+  <button class="suggest-thesis-btn bottom" data-suggest-new-thesis="bottom">+ Предложить тезис (в конец)</button>
+</main>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-lab-root-document]').forEach((root) => {
+    root.addEventListener('click', (event) => {
+      const target = event.target as HTMLElement;
+      const refLink = target.closest<HTMLAnchorElement>('[data-ref]');
+      if (refLink?.dataset.ref) {
+        window.dispatchEvent(new CustomEvent('lab:open-reference', { detail: { ref: refLink.dataset.ref } }));
+        return;
+      }
+      const title = target.closest<HTMLElement>('.title');
+      if (title) {
+        const refs = title.parentElement?.dataset.sectionRefs?.split(',').filter(Boolean) ?? [];
+        window.dispatchEvent(new CustomEvent('lab:highlight-references', { detail: { refs } }));
+        return;
+      }
+      const suggestion = target.closest<HTMLElement>('[data-suggest-ref]');
+      if (suggestion?.dataset.suggestRef) {
+        window.dispatchEvent(new CustomEvent('lab:open-suggestion', { detail: { ref: suggestion.dataset.suggestRef, label: suggestion.dataset.suggestLabel ?? '' } }));
+        return;
+      }
+      const thesis = target.closest<HTMLElement>('[data-suggest-new-thesis]');
+      if (thesis?.dataset.suggestNewThesis) {
+        window.dispatchEvent(new CustomEvent('lab:open-suggestion', { detail: { ref: 'NEW_THESIS', thesis: true, position: thesis.dataset.suggestNewThesis } }));
+      }
+    });
+  });
+</script>

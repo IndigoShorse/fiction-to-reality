@@ -1,0 +1,60 @@
+.page-header {
+  position: relative;
+  z-index: 10;
+  border-bottom: 1px solid var(--ink-line);
+  background: var(--parchment);
+}
+
+.page-header-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 28px 40px 24px;
+}
+
+.page-header-title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  height: 52px;
+  margin-bottom: 12px;
+}
+
+.page-header-title h1 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 32px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.page-header-version {
+  color: var(--accent);
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+
+.auth-status {
+  margin-left: auto;
+  color: var(--ink-soft);
+  font: 12px var(--sans);
+}
+
+.auth-btn {
+  padding: 6px 14px;
+  border: 0;
+  border-radius: 3px;
+  background: var(--accent);
+  color: var(--parchment);
+  font: 13px var(--sans);
+  cursor: pointer;
+}
+
+.auth-btn:hover { background: #6f2424; }
+.auth-btn.logged { background: var(--ink-soft); }
+
+@media (max-width: 600px) {
+  .page-header-inner { padding: 22px 20px 18px; }
+  .page-header-title { height: auto; min-height: 52px; }
+}

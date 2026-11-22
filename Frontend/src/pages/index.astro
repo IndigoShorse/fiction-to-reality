@@ -1,23 +1,10 @@
 ---
-import source from '../../../Static/index.html?raw';
-import { getBody, getInlineScript, getStyle } from '../lib/legacy';
-
-const css = getStyle(source);
-const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
-const libraryCard = `
-    <a href="${base}lib/" class="path-card">
-      <div class="path-icon">📚</div>
-      <div class="path-title">Lib</div>
-      <div class="path-desc">Библиотека художественных текстов и материалов проекта.</div>
-      <div class="path-tag">Library → /lib</div>
-    </a>`;
-const body = getBody(source)
-  // Learn will return when its section is migrated to Astro.
-  .replace(/<a href="learn\/index\.html" class="path-card">[\s\S]*?<\/a>/, '<!-- Learn is temporarily hidden. -->')
-  .replaceAll('href="learn/index.html"', `href="${base}learn/"`)
-  .replaceAll('href="lab/index.html"', `href="${base}lab/"`)
-  .replace(/(<div class="paths">[\s\S]*?)(<\/div>\s*<\/div>\s*<!-- Модалка)/, `$1${libraryCard}\n  $2`);
-const script = getInlineScript(source);
+import HubIntro from '../components/Hub/HubIntro.astro';
+import HubPaths from '../components/Hub/HubPaths.astro';
+import WelcomeOverlay from '../components/Hub/WelcomeOverlay.astro';
+import '../styles/tokens.css';
+import '../styles/overlay.css';
+import '../styles/hub.css';
 ---
 
 <html lang="ru">
@@ -25,10 +12,12 @@ const script = getInlineScript(source);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gap Research Lab</title>
-    <style is:global set:html={css}></style>
   </head>
   <body>
-    <Fragment set:html={body} />
-    <script is:inline set:html={script}></script>
+    <main class="hub-container">
+      <HubIntro />
+      <HubPaths />
+    </main>
+    <WelcomeOverlay />
   </body>
 </html>

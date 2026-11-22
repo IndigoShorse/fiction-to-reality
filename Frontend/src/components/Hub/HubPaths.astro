@@ -1,0 +1,25 @@
+---
+import HubPathCard from './HubPathCard.astro';
+
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+const paths = [
+  {
+    href: `${base}lab/`,
+    icon: '🔬',
+    title: 'Lab',
+    description: 'Blueprint. Лаборатория. Корневая спецификация MagicNet. Найдите гапы, предложите правки и помогите создать ТЗ.',
+    tag: 'Blueprint → /lab',
+  },
+  {
+    href: `${base}lib/`,
+    icon: '📚',
+    title: 'Library',
+    description: 'Библиотека художественных текстов и материалов проекта.',
+    tag: 'Library → /lib',
+  },
+];
+---
+
+<div class="paths">
+  {paths.map((path) => <HubPathCard {...path} />)}
+</div>

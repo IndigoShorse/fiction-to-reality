@@ -1,0 +1,50 @@
+---
+import NavLink from '../components/NavLink.astro';
+import AuthOverlay from '../components/Overlay/AuthOverlay.astro';
+import '../styles/tokens.css';
+import '../styles/research-layout.css';
+import '../styles/overlay.css';
+
+interface Props {
+  title?: string;
+  pageTitle?: string;
+  version?: string;
+  activePage?: 'lab' | 'lib';
+}
+
+const {
+  title = 'Gap Research Lab',
+  pageTitle = title,
+  version = 'v7.6 · Blueprint',
+  activePage,
+} = Astro.props;
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+---
+
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <header class="page-header">
+      <div class="page-header-inner">
+        <div class="page-header-title">
+          <h1>{title}</h1>
+          <span class="page-header-version">{version}</span>
+          <NavLink href={base} label="Hub" arrow />
+          {activePage === 'lib'
+            ? <NavLink href={`${base}lab/`} label="Blueprint" />
+            : <NavLink href={`${base}lib/`} label="Library" />}
+          <span class="auth-status" id="auth-status"></span>
+          <button class="auth-btn" id="auth-btn" style="margin-left:auto;">Войти</button>
+        </div>
+        <slot name="header-content" />
+      </div>
+    </header>
+    <AuthOverlay />
+    <slot />
+  </body>
+</html>
+

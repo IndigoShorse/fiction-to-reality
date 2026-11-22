@@ -1,0 +1,20 @@
+<div class="tooltip" data-lab-tooltip></div>
+
+<script>
+  import { MAGE } from '../../data/lab/mage';
+  import { PHYS } from '../../data/lab/phys';
+
+  const references = { ...MAGE, ...PHYS };
+  const tooltip = document.querySelector<HTMLElement>('[data-lab-tooltip]');
+
+  window.addEventListener('lab:show-tooltip', ((event: CustomEvent<{ ref: string; target: HTMLElement; side: 'left' | 'right' }>) => {
+    const data = references[event.detail.ref as keyof typeof references];
+    if (!tooltip || !data) return;
+    tooltip.textContent = data.short;
+    tooltip.classList.add('show');
+    const rect = event.detail.target.getBoundingClientRect();
+    tooltip.style.left = `${event.detail.side === 'left' ? rect.left - tooltip.offsetWidth - 8 : rect.right + 8}px`;
+    tooltip.style.top = `${rect.top}px`;
+  }) as EventListener);
+  window.addEventListener('lab:hide-tooltip', () => tooltip?.classList.remove('show'));
+</script>

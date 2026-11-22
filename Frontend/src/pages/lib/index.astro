@@ -1,37 +1,17 @@
 ---
-import NavLink from '../../components/NavLink.astro';
+import ResearchLayout from '../../layouts/ResearchLayout.astro';
+import { pageConfigs } from '../../config/pages';
+import ArticleCard from '../../components/Lib/ArticleCard.astro';
+import { listArticles } from '../../data/lib';
+import '../../styles/lib/blog.css';
 
-const articles = [
-  {
-    slug: 'dvoe-menya',
-    title: 'Двое меня',
-    description: 'Рассказ о копии сознания, одиночестве и возвращении с Луны.',
-  },
-];
-const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+const articles = await listArticles();
 ---
 
-<html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Библиотека — Gap Research Lab</title>
-    <style>
-      :root { --paper:#f4ebd9; --ink:#3b2f2f; --soft:#6b5b4e; --line:#8b7355; --accent:#8b2e2e; }
-      * { box-sizing:border-box; } body { margin:0; min-height:100vh; background:var(--paper); color:var(--ink); font-family:Georgia, serif; }
-      main { max-width:900px; margin:0 auto; padding:48px 24px; } a { color:inherit; } .navigation { display:flex; gap:10px; }
-      h1 { margin:28px 0 8px; font-size:36px; } .lead { margin:0 0 36px; color:var(--soft); font:16px 'Segoe UI', sans-serif; }
-      .article { display:block; padding:24px; margin:14px 0; border:1px solid var(--line); border-radius:4px; text-decoration:none; transition:.2s; }
-      .article:hover { border-color:var(--accent); transform:translateY(-2px); box-shadow:0 8px 20px #3b2f2f26; } .article h2 { margin:0 0 8px; font-size:23px; } .article p { margin:0; color:var(--soft); font:14px/1.55 'Segoe UI', sans-serif; }
-    </style>
-  </head>
-  <body><main>
-    <nav class="navigation" aria-label="Основная навигация">
-      <NavLink href={base} label="Hub" arrow />
-      <NavLink href={`${base}lab/`} label="Blueprint" />
-    </nav>
+<ResearchLayout pageTitle="Библиотека — Gap Research Lab" version={pageConfigs.lib.version} activePage="lib">
+  <main class="library-page">
     <h1>Библиотека</h1>
     <p class="lead">Тексты и материалы проекта.</p>
-    {articles.map((article) => <a class="article" href={`${base}lib/${article.slug}/`}><h2>{article.title}</h2><p>{article.description}</p></a>)}
-  </main></body>
-</html>
+    {articles.map((article) => <ArticleCard article={article} />)}
+  </main>
+</ResearchLayout>

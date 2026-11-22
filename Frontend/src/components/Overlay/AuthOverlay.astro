@@ -1,0 +1,58 @@
+<div class="modal-overlay" id="auth-overlay">
+  <div class="modal auth-modal">
+    <button class="close" id="auth-close">&times;</button>
+    <h3 id="auth-title">Вход</h3>
+    <span class="modal-ref">заглушка · без бэкенда · данные в localStorage</span>
+    <div class="modal-body">
+      <label for="auth-email">Email</label>
+      <input type="email" id="auth-email" placeholder="you@example.com" autocomplete="off" />
+      <label for="auth-name">Имя (для отображения)</label>
+      <input type="text" id="auth-name" placeholder="Как к вам обращаться" autocomplete="off" />
+      <div class="auth-actions">
+        <button class="primary" id="auth-login">Войти</button>
+        <button id="auth-register">Зарегистрироваться</button>
+        <button id="auth-guest">Войти гостем</button>
+        <button id="auth-logout" style="display:none">Выйти</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { authChangeEvent, getCurrentUser, signIn, signInAsGuest, signOut } from '../../data/auth';
+  import { createOverlayController } from '../../scripts/overlay-controller';
+
+  const overlays = createOverlayController();
+  const render = (user = getCurrentUser()) => {
+    const status = document.getElementById('auth-status');
+    const button = document.getElementById('auth-btn');
+    const setDisplay = (id: string, visible: boolean) => {
+      const element = document.getElementById(id);
+      if (element) element.style.display = visible ? '' : 'none';
+    };
+    if (status) status.textContent = user ? `вошли как ${user.name}` : '';
+    if (button) { button.textContent = user ? 'Профиль' : 'Войти'; button.classList.toggle('logged', Boolean(user)); }
+    setDisplay('auth-logout', Boolean(user));
+    setDisplay('auth-login', !user); setDisplay('auth-register', !user); setDisplay('auth-guest', !user);
+  };
+  const authenticate = (registered = false) => {
+    const email = (document.getElementById('auth-email') as HTMLInputElement | null)?.value ?? '';
+    const name = (document.getElementById('auth-name') as HTMLInputElement | null)?.value ?? '';
+    try {
+      signIn({ email, name }, registered);
+      overlays.close('auth');
+    } catch (error) {
+      alert(error instanceof Error ? error.message : 'Не удалось выполнить вход');
+    }
+  };
+
+  document.getElementById('auth-btn')?.addEventListener('click', () => overlays.open('auth'));
+  document.getElementById('auth-close')?.addEventListener('click', () => overlays.close('auth'));
+  document.getElementById('auth-login')?.addEventListener('click', () => authenticate());
+  document.getElementById('auth-register')?.addEventListener('click', () => authenticate(true));
+  document.getElementById('auth-guest')?.addEventListener('click', () => { signInAsGuest(); overlays.close('auth'); });
+  document.getElementById('auth-logout')?.addEventListener('click', () => { signOut(); overlays.close('auth'); });
+  window.addEventListener('auth:open', () => overlays.open('auth'));
+  window.addEventListener(authChangeEvent, ((event: CustomEvent) => render(event.detail)) as EventListener);
+  render();
+</script>
